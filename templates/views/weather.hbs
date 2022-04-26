@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    {{>links}}
+</head>
+    {{>style}}
+<body>
+
+    {{!-- header --}}
+
+    {{>header}}
+
+    {{!-- main content --}}
+
+    <div class="weather_content">
+        <div class="content">
+            <h3 class="weather_h3">welcome to weather forcast</h3>
+            <input type="text" placeholder="Enter the location" class="inputs" id="ints">
+            <button class="input_btn" id="Ibtn"><i class="fas fa-search"></i></button>
+            
+        </div>
+        <div class="resultbox">
+            <div class="fristdiv">
+                <span id="day"></span>
+                <p id="date"></p>
+            </div>
+             <div class="secondDiv">
+                 <p id="error"> The result...</p>
+             
+                 
+            </div>
+            <div class="thirdDiv">
+                <div class="temp">
+                     <h2> <span id="temprature"> </span></h2>
+                     <p id="minmax"></p>
+                </div>
+                 <div class="tempstatus">
+                    <h1 id="Tstatus"></h1>
+                </div>               
+            </div>
+        </div>
+       
+    </div>
+
+
+    {{!-- footer --}}
+
+    {{>foot}}
+    <script>
+        //const variables ...
+
+            const inputs = document.getElementById('ints');
+            const input_btn = document.getElementById('Ibtn');
+            const error = document.getElementById("error");
+            const day = document.getElementById('day');
+            const daate = document.getElementById('date')
+            const temprature = document.getElementById("temprature");
+            const minmax = document.getElementById("minmax");
+            const Tstatus = document.getElementById("Tstatus")
+            
+
+            //showing day and date...
+
+            const date = new Date()
+            const days = date.getUTCDay()
+            const weekdays = new Array();
+            weekdays[0] = "sunday";
+            weekdays[1] = "Monday";
+            weekdays[2] = "Tuesday";
+            weekdays[3] = "wednesday";
+            weekdays[4] = "Thusday";
+            weekdays[5] = "Friday";
+            weekdays[6] = "Saturday";
+
+            {{!-- Month --}}
+
+            const month = date.getMonth()
+            const mon = new Array();
+            mon[0] = "Jun";
+            mon[1] = "Feb";
+            mon[2] = "Mar";
+            mon[3] = "Apr";
+            mon[4] = "May";
+            mon[5] = "June";
+            mon[6] = "July";
+            mon[7] = "Aug";
+            mon[8] = "Sept";
+            mon[9] = "Oct";
+            mon[10] = "Nobem";
+            mon[11] = "Decm";
+            const Pdate = date.getDate()
+            const year = date.getUTCFullYear()
+            day.innerHTML = `${weekdays[days]}`;
+            daate.innerText = `${Pdate}/${mon[month]}`
+
+            // feach api data
+
+        const getDate = async()=>{
+            const intval = inputs.value;
+            if(intval === ""){
+                error.innerHTML = "! Please Enter City Name Before Seach"
+            }
+            else{
+                try{
+                    const url = `https://api.openweathermap.org/data/2.5/weather?q=${intval}&units=metric&appid=f68b46301e8bfaaba1bb7ece0e2a7913`;
+                    const response = await fetch(url);
+                    const jsobj = await response.json();
+                    console.log(jsobj);
+                    temprature.innerText = `${jsobj.main.temp}°C`;
+                    minmax.innerText = `max-temp : ${jsobj.main.temp_max}°C || min-temp : ${jsobj.main.temp_min}°C`;
+                    const status = jsobj.weather[0].main;
+                    error.innerText = `${jsobj.name},${jsobj.sys.country}`
+                    //console.log(status)
+                    if (status == "Sunny") {
+                        Tstatus.innerHTML = "<i class='fas fa-sun cloud' style='color: #ece368'></i>";
+                    } 
+                    else if (status == "Clouds") {
+                        Tstatus.innerHTML =
+                        "<i class='fas fa-cloud cloud' style='color: rgb(218, 218, 230)'></i>";
+                    }
+                    else if (status == "Rainy") {
+                        Tstatus.innerHTML =
+                        "<i class='fas fa-cloud-rain cloud' style='color: rgb(110, 170, 238)'></i>";
+                    } 
+                    else if (status == "Clear") {
+                        Tstatus.innerHTML =
+                        "<i class='fas fa-clouds-sun cloud' style='color: rgb(218, 218, 230)!important'></i>";
+                    }
+                    else if (status == "Mist") {
+                        Tstatus.innerHTML =
+                        "<i class='fas fa-fog cloud' style='color: rgb(218, 218, 230)!important'></i>";
+                    }
+                }
+                catch{
+                    error.innerHTML = ` fail to get '${intval}'! please check `
+                }
+                    
+            }
+                
+        }
+        input_btn.addEventListener('click',getDate)
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+ <div class="header">
+        <nav>
+        <h1><i class="fas fa-snowflake" id="snow"> </i><span>w</span>eather<span> for</span>cast <i class="fas fa-snowflake" id="snow"></i></h1>
+        <div class="menulist" id="menu">
+            <ul>
+                <li><a href="/">home</a></li>
+                <li><a href="/weather">weather</a></li>
+                <li><a href="/about">about us</a></li>
+            </ul>
+        </div>
+        </nav>
+        <a href="#"id="angle-down" onclick="menu()" ><i class="fas fa-bars" ></i></a>
+  </div>
+  <script>
+      const menu = ()=>{
+    let e = document.getElementById('menu')
+    if(e.className === "menu"){
+        e.className += " responsive"
+    }
+    else{
+        e.className = "menu"
+    }
+}
+      
+  </script>
