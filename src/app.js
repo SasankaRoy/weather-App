@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const hbs = require('hbs');
-const port = 8000;
+const port = process.env.PORT || 8000;
 const imgsrc = "https://source.unsplash.com/1200x1200/?dark ";
 
 const v_path = path.join(__dirname, '../templates/views');
